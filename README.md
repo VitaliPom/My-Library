@@ -2,7 +2,7 @@
 <p>
 <br>
 Hi, <br>
-Here's is a Perl tutorial that I've written when I tried to contribute to Programming Hub...<br>
+Here's is a Perl tutorial that I've written and tried to contribute to Programming Hub...<br>
 vitali.pom<br>
 </p>
 
