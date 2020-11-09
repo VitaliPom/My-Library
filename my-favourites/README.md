@@ -21,7 +21,7 @@ http://api.icsndb.com/jokes/random
 #First appeared	2005
 
 ###########PROMISES VS JAVASCRIPT##############
-https://github.com/VitaliPom/essentialWebShortcuts/blob/master/workbook/promises_vs_ajax.PNG
+https://github.com/VitaliPom/My-Library/blob/main/my-favourites/AJAX%20promises/promises_vs_ajax.PNG
 
 #Radial Colors Pallete Gradients
 #יופי של קיצורים בשביל לעשות צבעים יפים על מסך מלא, לא לשכוח רק להוסיף גודל מסך כדי שיראה נורמלי
