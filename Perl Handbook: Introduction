@@ -1,0 +1,21 @@
+---
+title: Perl Handbook: Introduction (1/4)
+published: true
+description: This is a small 4 page handbook I'm publishing for new Perl students who strive to learn scripting fast and efficiently, please subscribe.
+tags: beginners, introduction, perl, programming
+---
+
+#Perl
+--------------
+Perl. What is the Perl everyone are talking about? From a quick look at the language syntax, it might become clear for you why is it compared to MD5 Encryption - after encrypting, and why does one of the most popular Perl books have an image of a weird camel. But Perl has lots of benefits for most of the developers society. Being a short and quick to type scripting language, which does not require compilation means that once you’re used to it, an automation of an average daily job is a matter of minutes. Dreaming about making some scripts which will run on a server at the other side of the world, talking with other continents’ computers? PHP, one of the most popular web scripting languages is almost a complete derivative of Perl. Means that once you established your Perl knowledge base and trained to laugh whenever someone tells a Perl joke nearby, ramping up on PHP will be really a piece of cake for you. 
+
+At the end of this handbook tutorial you will learn to code in a scripting language. 
+“But how does that differ from the scripting languages I know?“ might be a good question for you to ask as well.
+
+In addition to everything we’ve already mentioned, Perl has a very unique and pretty big advantage over other programming languages that does not have that advantage. (You may start training with a gentle laugh right now). Perl has a unique Regex syntax, which makes your logs-text-parsing-tasks 5x times faster. And even though it takes just a few seconds sometimes, you’ll see that you have much less disturbing pauses as you code simple tasks in Perl rather than in any other programming language. And wether you’re willing to become a UNIX fan or already became one, Perl is simply THE language for you, since moving from Perl Regexes to UNIX Regexes as you parse your Android log files and debug your code base with a connected phone feels so much better, that you’ll be surprised you hadn't mastered it before. 
+
+------
+Typed with Effectedkeyboard. 
+Probably the most comfortable and effective keyboard you will ever see. 
+Download it here: 
+[Effectedkeyboard, Android play store](https://play.google.com/store/apps/details?id=com.menny.android.effectedkeyboard)

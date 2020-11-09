@@ -1,0 +1,282 @@
+---
+title: Perl Handbook:  Variables, Arrays/Lists, Hashes and Memory References (4/4)  
+published: true
+description: Each programming language saves somehow data types in its memory, this article has practicle examples on how to store data types in Perl programming language.
+tags: perl, beginners, tutorial, datatypes
+---
+
+###Variables, Arrays/Lists, Hashes and Memory References
+
+We might want to match something we’ve stored before in a couple or more regexes, or maybe something a little bit more practical: to store something we’ve found, even though we don’t know yet what is it, inside a variable. Which is pretty cool.
+
+Look at the following program:
+```
+my $name1 = undef;
+my $line = “Her name was Angel and she behaved like an angel… When she was sleeping.”
+if($line =~ /.+ name .+ (.+)/){
+    $name1 = $1;
+}
+```
+What a bunch of new things, huh? Well, as always everything is fairly simple:
+```
+`my` - Would be the security statement which tell us that variables ‘name’ and `line` are active only within the current .pl file 
+   (.pl is a typical extension for Perl files) 
+=~ - Would act like the usually disabled == for strings 
+   (the one instead of which we’d usually use Compare() in other programming languages), 
+   it’s just in Perl =~ stands for ‘matches’. 
+   We behave as if $line  ‘looks like’ the following up regex. 
+$1 - Would refer for the brackets as with some additional meaning, where they store inside the following up block anything that was inside them and within an appropriate group number: 
+   first pair pair of brackets inside the regex would be inside $1, second pair of brackets inside the same regex would be inside $2, etc. 
+```
+Complex? No. But what if we want to parse a whole file? 
+
+
+In order to parse whole files, we have File Handlers - some reference that we open to a file, which can we read from and write to. Again nothing special and here is some code:
+```
+open FILE;
+while(<FILE>){
+    my $line = $_;
+    print $line; 
+}
+close FILE;
+```
+Again some explanation about the example:
+```
+FILE - Would be the file handler,
+   which is very important to close once you open it.
+<FILE> - Would be the act of reading a line from the FILE, 
+   which also returns a positive value when succeeds
+   and fails at EOF (End Of File - the last char of a file).
+$_ - Would be the read line from the file. 
+```
+####Things are getting a bit tougher once we want to really analyse what we read and store it into a typical Perlish data structure. For that we have Hashes, Lists, and here we also represent the Memory References. 
+
+***For first and foremost, in Perl - List and Array are the same guy.***
+
+`my @arr = (‘a’, ‘b’, ‘c’, ‘d’, 1, 2, 3);` #I’m an array and in Perl I’m also a list, means that you can access me with push, pop and the usual array indices. The fact that I’m an arraylish list doesn’t mean you can simply push things into the middle of me, but yes it means you can concat me with other guys like me.
+
+
+`print “$array[1]\n”; #prints b`
+
+
+```
+my @weirdArray = (‘boo’, ‘waaa’);
+push @arr, @weirdArray; 
+#now @arr = (‘a’, ‘b’, ‘c’, ‘d’, 1, 2, 3, ‘boo’, ‘waaa’)
+```
+
+
+So now when we know that the Perlish arrays are extravagant and special… What about the hashes that we wanted to use for analysing? Get ready for a really long example.
+
+##Really long example
+
+#Perl Hashes
+
+Assume we have a text that describes a sleeping room, which has a closet and bunch of bags. We have a text that describes it and we want to “model” that room into a hash. Why hash? Because even though Perl does have objects, you probably don’t want to go for that hunting, because of the complexity of the work with them and maybe more realistic view the unencessity in Perl objects in the daily usage. As for the other data storing options, Perl like any basic programming language has a very limited number of them and you can easily list them in your mind, assuming we didn’t and won’t cover Perl Objects.
+
+Example (Attention! A long one):
+
+Entering mode Room...
+Room has closet.
+socks detected inside the closet.
+sweater detected in the closet.
+gloves detected in the closet.
+Opening second door…
+OverflowClosetException: Closing closet.  
+Room has small bag.
+lipstick detected inside the small bag.
+makeup detected inside the small bag.
+tissues detected inside the small bag.
+black Hole detected inside the small bag.
+Exiting small bag.
+Room has big bag.
+Entering big bag…
+BagHoleError: Leaving bag. Please buy a new bag and come back again.
+
+Before beginning to wrap up our Room log file with code, we’ll try to represent first how we’d see the resulting data model:
+```
+-room
+    -closet
+        -socks
+        -sweater
+        -gloves
+   -small bag
+        -lipstick 
+        -makeup
+        -tissues
+        -black hole
+   -big bag
+        N/A
+```
+And of course the promised chunk of code:
+```
+open FILE;
+my %room;
+my $storage = undef;
+
+while(<FILE>){
+    my $line = $_;
+    my $found_stuff = undef;
+    if($line =~ /Room has (.+)/i){
+        $storage = $1;
+        $room{$storage} = ();
+        continue;
+    }
+    if($line =~ /(.+) detected inside the $storage/i){
+        $found_stuff = $1;
+        ##push $found_stuff, into the Array that is located inside the Hash %room under the key $storage 
+        push @{$room{$storage}} , $found_stuff;    
+   }
+}
+close FILE;
+```
+
+```
+my $four_spaces = “    “;
+
+print “-room\n”;
+foreach my $hashed_storage(keys %room){ 
+    print “$four_spaces”;
+    print “-$hashed_storage\n”;
+    foreach my $hashed_stuff (@{$room{$hashed_storage}}){
+        #print everything just like in the text example
+        print “$four_spaces”;
+        print “-$hashed_stuff\n”; 
+    } 
+}
+```
+
+
+We bet you’ve already guessed that this time it took a little bit more than 5 minutes to dump the thoughts into code this time. Due to the resulting anxiety from the hard work and non-stop sweating of our tired Neurones, we’ll go straightforwards to the explanations:
+```
+undef - would act like null, but in Perlish style
+```
+```
+defined - would return true if the variable is defined
+```
+```
+foreach - would be in the form of ‘foreach $variable(list of values)’ where the loop goes on each    and every value and stores it into variable before entering the loop scope.
+```
+```
+@{} - would be a dereferenced Array. We stored a reference to an empty Array, now we need to push some value into it.
+```
+```
+continue - would continue straight to the next iteration of the enclosing loop
+```
+```
+keys - would return a list of the keys in the following up hash table
+```
+```
+% - would be like @ for arrays, just for hashes.
+Hashes in their simplest form as you might have understood are accessed like the following:
+$hash{‘key’} = ‘value’;
+```
+
+
+So we’ve mentioned the @{} which acts as an array dereferencing. The same term of dereferencing is relevant for hashes and variables as well, in terms of Perl programming. Let’s take a little bit closer look at the dereferencing/referencing terms we’d met.
+
+##Dereferencing/Referencing Closer Look 
+
+Assume we have some array of coloured pens, which we want to put into our school box, but the pencil case appears to be created in out Perl code before the school box. In real life story case, we bought our sorted pencils case, we bought few more things at some store for our school case and we bought a school box at some 3rd store. Now we want to put everything inside the school box and model it as well in Perl language terms. 
+
+Keep up assuming and this time please assume you have the following chunk of code, which already functions and works within some flow and you decide to add anything you write to the end of it in order to avoid breaking something that’s already up and running - unluckily for your, working as well. 
+
+```
+@pens = (‘red_pen’, ‘pink_pen’, ‘yellow_pen’, ‘orange_pen’, ‘cyan_pen’, ‘blue_pen’);
+%school_box = (‘eraser’ => ‘Sarahs_eraser’, ‘round_object’ => ‘bottle_cap’);
+```
+
+#####
+***Added later by Bob the Engineer. Tested and working. Necessary for IT department to function.***
+#####
+```
+$school_box{‘paper_reminder_note’} = ‘Reminder: Pay back the loan to Bob from IT by the end of the year’; 
+```
+
+So we have this pupil school box model, which Bob the Engineer has already succeeded to load with some paper note reminder and now we decide to put the pens array inside of it. We think of the first option that crosses our minds, which is to do something like this:     
+```    
+    #### $school_box{‘pens’} = @pens;
+#Because why not
+```
+And we figure out that under the key ‘pens’ we have some number.    
+***
+###OFF TOPIC
+
+This is another time we meet some sort-of-special char that behaves differently at different places of the program, like the dollar sign inside the regex:
+
+/hello world!$/
+
+Here we have a regex that can match all lines that can end with the string ‘hello world!’.
+Versas:
+
+my $name = “John”;
+/name is $name/
+
+And here we have a regex that can match all places that have the string ‘name is John’.
+
+
+
+Back to our weird number that we promised you’d get inside the hush, instead of the array, if you’d run the program on your machine. For the array’s “@“ char, the case of ‘act differently when appear at different places’ applies. When you assign an array as is to a variable, the variable gets the array’s length:
+
+`my $number_of_pens = @pens; #NO!`
+
+And you can guess the number inside of $number_of_pens from its name.
+
+
+
+We head back to our original problem we started discussing, which is storing the whole array under some key inside a hash (aka hash of arrays). 
+***    
+For that we’ll need to store some reference to our array, [see our 1st OFF TOPIC monolog for the reason why do we even need References] which is done with a backslash:
+```
+my $pens_arr_ref= \@pens;
+```
+And in order to dereference it back to pens array, we do:
+```
+my @orig_pens_arr = @{$pens_arr_ref};
+```
+Eventually we end up with the following School Box Model program:
+```
+@pens = (‘red_pen’, ‘pink_pen’, ‘yellow_pen’, ‘orange_pen’, ‘cyan_pen’, ‘blue_pen’);
+%school_box = (‘eraser’ => ‘Sarahs_eraser’, ‘round_object’ => ‘bottle_cap’);
+
+
+#####
+#Added later by Bob the Engineer. Tested and working. Necessary for IT department to function.
+#####
+$school_box{‘paper_reminder_note’} = ‘Reminder: Pay back the loan to Bob from IT by the end of the year’; 
+
+
+#####
+# Added by John from Angela’s team
+# P.S Guys, pay your bills ;)
+#####
+
+
+
+####
+###Uncomment for debug
+##
+#
+#$school_box{‘pens’} = \@pens;
+#
+#foreach my $pen (@{$school_box{‘pens’}){      #Dereferencing in action 
+#   print “$pen detected. You’ll forget what you read.\n”
+#}
+#
+##
+####
+```
+
+
+You might ask yourself what shall you do when you want to print the entire array. We didn’t cover anything that regards checking wether we are looking at a reference or a usual human readable variable. Based on that you don’t need to randomly access stuff that’s inside your data structures during your usual daily routine, Perl has a special package for debugging purposes, just as many other packages you usually have in scripting languages. **If you’re working inside some big company, or with some SDK that has Perl support on it’s side, you might already have all the packages you’ll ever need inside your Perl distribution - so that you won’t have to mess up with the download-installation processes.** In any case, for packages and information beyond the basics, please keep up researching online as it is not within the scope of this Perl tutorial. 
+
+
+
+At this informal closing note, we’d suggest you to have open mind and keep up looking for anything you find useful for your program to operate at your favourite search engine. Having Perl’s basics, assuming you had a little bit of practice as you go (and if you haven’t done so already, do it!) you can now start writing your own scripts and discover the small tiny Perli-lian tricks as you go around the web, at home books and with your colleagues at coffee shops. 
+
+#Thanks for reading :)
+#Go for it, you have it!
+
+#EOF
+
+

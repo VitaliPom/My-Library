@@ -1,0 +1,21 @@
+---
+title: Perl Handbook: Variables, Memory References And Hashes [OT] Storing Data in Memory (3/4)
+published: true
+description: Perl has seemingly uncomfortable/unnecessary data "types" (pointers) which are distractive for the user typing and might ruin your experience. This is the "solution" for the first possible solution for that problem which comes in mind.
+tags: Perl, begginers, memory, C 
+---
+
+#Perl
+###Storing Data in Memory - 
+###Variables, Memory References And Hashes
+####OFF TOPIC [OT]
+
+We’d like to try to clarify to our readers the source of necessity for References in Perl and in all other possible places wherever you have references, pointers (in languages like Java), or some different sort of links between the data types inside the memory.
+
+One might think himself/herself that instead of working with those possibly annoying pointers and the ones we have in Perl - References, the computer memory Gurus could simply take some title, head and meta-data (talking in html language for instance), store it at some place in the memory and below store anything we want, right at the place that was allocated for our object. Upon rejecting this solution and firing Mike from our team for making un-based and such bizarre statements, let’s point out how did he come up to it.
+
+When you write in C, you have to give the exact size for memory allocation and later on free it for the usage of the rest of the system - again freeing the same amount you have had allocated before. So… Basically, there’s no restriction that says “Don’t allocate too much YOU! For us not to be punished for the allocation sin!!!”, which means we are allowed at this point to allocate a little bit more and make some space for our head/title/whatever-it-is to store the additional data such as whoami (array/hash/variable) and whenever we need some nested data structure such as an array of hashes, store this bunch of objects in a row, having literally hashes that are ordered exactly one after another, raising the density of the stored memory and growing the I/O speed. 
+
+<i>Voila! No pointers, we won!!! We did it! We have a fast operating memory with a dense storage just like we wanted. Waaaaaait a moment… Let’s take a closer look once again.</i>
+
+Among all of the data types we’ve mentioned, there will always be the dynamic ones that allow us not only change, but also to add and remove data (aka objects) dynamically. This is all great and fine, until the amount of the add/remove operations raise up. The time for expanding this type of data storage sometimes simply doesn’t worth it, because of the runtime arousal that the nest-iness of the data type causes to the overall expanding time (and that is without reminding the shrinking time which will come eventually and cause to the loose of the density, getting us back to our beloved References Model, where we have a decoupling between the actual data and its address in the memory, aka reference. 

@@ -1,0 +1,160 @@
+---
+title: Perl Handbook: Introduction to REGEXES Special Characters (2/4)
+published: true
+description: Perl tutorial. Part 2, Special Characters
+tags: beginners, introduction, programming, perl
+---
+
+#Regexes - Special Chars
+—————————————————
+There are special characters (Escape Characters in the more formal language), which probably the most common used, hence the name Useful Characters as being used here.
+
+Useful Characters have Spaces, Digits, Letters and Words.
+
+—————————————————
+
+```
+When we want to match a Space it would be: \s
+When we want to match a Digit it would be: \d
+```
+
+—————————————————
+
+For letters it is starting to be a little bit more complicated, since there are capital letters in some languages. Moreover, sometimes we’d like to ignore all capital/small cases and search for a phrase in our Log File (for instance). In other cases, we’d like to search for a pattern, i.e. temperature, where we know that the last character is a letter and can be either 'f' (for fahrenheit) or 'c' (for celsius). 
+
+```
+To match a single Small Case character, we’d use the following expression:
+[a-z]
+To match a Capital Case character, we’d use the following expression:
+[A-Z]
+```
+
+The square brackets can be used for much more cases wherever we need to describe a chose of a  single char. For instance: 
+```
+[a-zA-Z] 
+Would match any case letter. 
+
+[a-z\d]
+Would match any letter in small case OR a digit.
+```
+
+—————————————————
+ 
+We’ve talked in the previous section about matching a single character, but what about matching a phrase such as 
+```
+“we have potatoes, no cookies for you”
+It would be:
+/we have potatoes, no cookies for you/i
+```
+
+Now, please notice that we used more full form of regular expression matching here. If so far we’ve being talking about single characters, here we’ve got a heck of full RegeX. We have a number of characters that we match exactly one after another, along with some “,” in the middle… We enclose it with two `“/“`-s  and in the end we state that we want to `Ignore Cases` for all letters we have inside our regex (aka whatever is between the slashes).  
+
+—————————————————
+
+Taking the opportunity to show off some too sweet for ugly, but a useful mixture, here we go with a full regex representation and something that tells us in which line it appears at some imaginary book:
+```
+/we have potatoes, no cookies for you[\d].??-[\d].??/i
+```
+
+Here we have a digit, which can be repeated between one to three times. 
+```
+“.” - Would match the previous character a single time
+“?” - Would match the previous character 0 or 1 time. 
+```
+
+—————————————————
+
+We could also tell our digit to be repeated not only for texts with up to 1000 lines, (aka max 999) - but also for any number of texts using the following expression:
+
+```
+/we have potatoes, no cookies for you[\d]+-[\d]+/i
+```
+
+The “+-“ is quite confusing, isn’t it? Well, hence the name Perl for Perl :) . However, besides joking we’d like to explain this part as well. The “+” is a character which is translated in it’s usual form. If we would like to search for “+” as in “2+2”, we’d put it inside the square brackets:
+```
+/2[+]2/ - Would match "2+2"
+```
+Before hand, inside the first expression,
+```
+“+” - Would match the previous character 1 or more times.
+```
+—————————————————
+
+Our colleague bets the reader shall’ve be lost by now in terms of where did we get this expression we’re looking for from. We’ll remind, since it is important to get with you guys in sync before we continue to our next example. 
+
+So we had some sentence, which we looked for and later on decided that it could be quoted somewhere and we want to find that somewhere and match our sentence to that quoting place. That’s where we started to look for lines numbers. 
+
+There we stopped, currently we are looking only for quotes. But what if we would like to look for quotes OR the original text - whichever comes first in our given resource or reference? Would we do double search for each of them? NO!
+
+So basically it would look something like that:
+```
+/we have potatoes, no cookies for you([\d]+-?[\d]*)?/i
+```
+Where:
+“*” - Would match the previous character 0 or more times 
+and “()“ are again encapsulating and being used as special characters, which is like “[]”, but does not change the way in which other special characters are being interpreted inside - unlike the square brackets where “a-z” means any character from a to z. For “(a-z)” it’d mean to look for “a-z”, where that instance of a-z is being enclosed inside a group within our regex.
+
+—————————————————
+
+So we tried to explain some “of out the blue” example, which you can try out, though it is less practical. We’ll try to bring up some real life example under the assumption that one does not simple talks about the real life (due to the risk of a clinical boredom). 
+
+Imagine that you are working at some European Atom Research Centre and you shall dump all of the lines from the main calibration machine out log file, which contain the data about some syncing waves, in order to pass it forwards to the next team for further processing. 
+
+You do some programmers typical lazy research and figure out that the log consists of single lines mostly, or at least those that will be the point of interest for you and that before the part that is interesting for you there might come a letter inside square brackets, followed with “:”, while after the line might come a part that states something about the time when the process occurred in the analysing machine. So we end with something like that:
+
+Typical required output from your program:
+```
+Read wave at 24.6Mhz
+Read wave at 2400.6Mhz
+Read wave at 1.1Ghz
+Read wave at 20000Mhz 
+Read wave at 3.21Ghz
+```
+An example for an input:
+```
+Syncing with the calibration tool……
+Starting process id #123542
+Preparing to boot the main machine
+Connection to main machine established.
+Connection between the log processor and the calibration machine is On
+Main machine is active: true.
+[E]: Read wave at 24.6Mhz
+Error on preparing to calibrate with the read processing unit.
+Read wave at 2400.6Mhz ; you might be out of sync in 3 pico seconds
+[A]: Read wave at 1.1Ghz
+Sync is active again
+Read wave at 20000Mhz
+Read wave at 3.21Ghz
+…
+…
+…
+```
+
+Please take a few moments to recognise what do we want to “copy”/“cut” out of the log file and in what format do we want to paste it in our output file which will be taken to the next working flow step.
+
+Few more challenges are facing us right now and we will explain shortly how and if we are overcoming them. There is a challenge of time and performance. In addition, there is a new non-stated formally requirement which is to take out only the part we need from the line. Nevertheless, we’d like to point out how new lines are being interpreted by Perl. 
+ 
+The challenge of time and performance is the easiest one to talk about, since it is solved by definition (Hello Math World). The point is that a typical parsing program will run at most few minutes for extra huge log files and during a full working day with a nice Nespresso machine nearby, it is just unfelt. You’ll get a high five if the complexity of your first programs will get you to more than a couple of seconds of runtime. 
+
+We also stated the pulling the required part without the unneeded chunk of stuff which might come around. First of all, we’d like to mention that Perl by default runs line by line, whereas it begins the matching search again every time it sees an end of line. Nothing special. Simple logical fact once you think a bit about how Perl’s state machine might work (given that the performance is solved by super fast nowadays CPUs): for every char in the input text it tries to match the first char in the regex, if succeeds it continues to the second char in the regex and to the next char in the input text, if it fails, it begins to try and match again the next char to the first regex char. Simple isn’t it? Now regarding the new lines, usually we don’t include the “\n” (aka, new line char) in our regexes, so every time Perl’s state machine sees it fails to match it and goes back to the first state that has the first char. 
+
+If we do want to restrict the regex to match the full line, instead of part of it - as other less regex friendly programming languages might do, we can use another two special chars as the following:
+```
+/^this is a full line that appears in the log file$/
+
+Or looking back at our example:
+
+/^Read wave at 20000Mhz$/
+```
+Where:
+```
+^ - Would match the theoretical first letter in the beginning of the line and 
+$ - Would match the theoretical last letter in the end end of the line
+```
+——————————————————
+
+You might ask yourself why is the suffix sign stands for the beginning of the line… Like “Hey, it’s suffix!”. The reason is that the dollar sign has a different meaning when it appears in different places inside the Regex, there it already stands for a Variable. Variables are discussed in the next chapter.  
+
+Please download Effectedkeyboard, it's a real, comfortable keyboard for Android. It has dozens of features and among of all flying letters off of the screen right as you type on your Android.
+Download: 
+[Effectedkeyboard, Android Google Play market](https://play.google.com/store/apps/details?id=com.menny.android.effectedkeyboard)
