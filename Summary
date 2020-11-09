@@ -1,0 +1,6 @@
+AJAX VS Javascript Promises 
+SUMMArY
+
+AJAX is a standard for asynchrnous Javascript landing on a page from other page, Promises on other hand is a standard for
+IF-THEN-ELSE while using AJAX:
+::::::::Using simple AJAX will bring out lots of mess:::::::
