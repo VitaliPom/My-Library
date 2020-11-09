@@ -3,7 +3,7 @@ git tutorial on one of the hottest topics on how to redraw git history (how to r
 
 Tutorial on how to create nice looking picture in git graph, like this:
 
-<img src="https://raw.githubusercontent.com/VitaliPom/My-Library/main/git-redraw-tutorial/Screen%20Shot%202019-03-07%20at%2019.44.02.png" height="512px" width="512px">
+<img src="https://raw.githubusercontent.com/VitaliPom/My-Library/main/git-redraw-tutorial/image.jpeg" height="512px" width="512px">
 
 
 You do `git commit` after you made `git branch`, you continue to work, until you do `git merge` and even `git push`. There are thousands of tutorials like that, but you don't know the upcoming hustle that will be with your git branch, so usually in development of some big products, `git branch` is omitted and corporations don't usually trust novice developers on how to work with the branch, since they don't know how to clean up. 
